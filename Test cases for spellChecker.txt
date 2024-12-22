@@ -1,0 +1,68 @@
+---Test case 01:---
+
+Enter Sinhala text to check:
+අම්මා ගෙදර යනවො මම පරිගනකය පවිච්චි කරනවා
+
+Spelling errors found:
+'යනවො' might be misspelled. Suggestions: යනවා
+'පරිගනකය' might be misspelled. Suggestions: පරිගණකය
+'පවිච්චි' might be misspelled. Suggestions: පාවිච්චි
+
+Auto-corrected text:
+අම්මා ගෙදර යනවා මම පරිගණකය පාවිච්චි කරනවා
+
+
+---Test case 02:---
+
+Enter Sinhala text to check:
+කලූ මේසය උද බෝතලය තියනවා
+
+Spelling errors found:
+'කලූ' might be misspelled. Suggestions: කලු
+'උද' might be misspelled. Suggestions: උඩ
+'තියනවා' might be misspelled. Suggestions: තියෙනවා
+
+Auto-corrected text:
+කලු මේසය උඩ බෝතලය තියෙනවා
+
+
+---Test case 03:---
+
+Enter Sinhala text to check:
+මිනිසා වහනය පදවනවො
+
+Spelling errors found:
+'වහනය' might be misspelled. Suggestions: වාහනය
+'පදවනවො' might be misspelled. Suggestions: පදවනවා
+
+Auto-corrected text:
+මිනිසා වාහනය පදවනවා
+
+
+---Test case 04:---
+
+Enter Sinhala text to check:
+රතූ පාට නගී
+
+Spelling errors found:
+'රතූ' might be misspelled. Suggestions: රතු
+'නගී' might be misspelled. Suggestions: නංගී
+
+Auto-corrected text:
+රතු පාට නංගී
+
+
+---Test case 05:---
+
+Enter Sinhala text to check:
+මම පරිගනකය පවිච්චි කරනවා අම්මා ගෙදර යනවො නගී රතූ පාට බෝතලය
+
+Spelling errors found:
+'පරිගනකය' might be misspelled. Suggestions: පරිගණකය
+'පවිච්චි' might be misspelled. Suggestions: පාවිච්චි
+'යනවො' might be misspelled. Suggestions: යනවා
+'නගී' might be misspelled. Suggestions: නංගී
+'රතූ' might be misspelled. Suggestions: රතු
+
+Auto-corrected text:
+මම පරිගණකය පාවිච්චි කරනවා අම්මා ගෙදර යනවා නංගී රතු පාට බෝතලය

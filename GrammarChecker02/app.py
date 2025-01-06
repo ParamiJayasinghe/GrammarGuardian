@@ -1,3 +1,4 @@
+import streamlit as st
 import google.generativeai as genai
 
 # Step 1: Configure your API Key
@@ -21,45 +22,53 @@ def check_grammar_with_gemini(text):
 def validate_custom_rules(text):
     errors = []
     suggestions = []
+    corrected_text = text  # Keep track of the corrected text
 
     # Rule 1: Starts with "මම" must end with "මි"
     if text.startswith("මම"):
-        if not text.endswith("මි"):
-            errors.append("The sentence starts with 'මම' but does not end with 'මි'.")
+        if not (text.endswith("මි") or text.endswith("මී") or text.endswith("යයි") or text.endswith("වී")):
+            errors.append("The sentence starts with 'මම' but does not end with 'මි', 'මී', 'යයි', or 'වී'.")
             corrected_text = text.rstrip(".") + "මි."
-            suggestions.append(corrected_text)
 
     # Rule 2: Starts with "අපි" must end with "මු"
     if text.startswith("අපි"):
-        if not text.endswith("මු"):
-            errors.append("The sentence starts with 'අපි' but does not end with 'මු'.")
+        if not (text.endswith("මු") or text.endswith("ෙමු") or text.endswith("යමු") or text.endswith("වෙමු")):
+            errors.append("The sentence starts with 'අපි' but does not end with 'මු', 'ෙමු', 'යමු', or 'වෙමු'.")
             corrected_text = text.rstrip(".") + "මු."
-            suggestions.append(corrected_text)
 
-    return errors, suggestions
+    # Return the errors and corrected text
+    return errors, corrected_text
 
-# Main function to run the checker
+# Streamlit UI
 def main():
-    text = input("Enter Sinhala text: ")
-    
-    # Step 1: Get grammar feedback from Gemini API
-    gemini_response = check_grammar_with_gemini(text)
-    print("Gemini API Response:")
-    print(gemini_response)  # Display the response from Gemini
-    
-    # Step 2: Validate custom grammar rules
-    errors, suggestions = validate_custom_rules(text)
-    if errors:
-        print("\nCustom Rule Errors:")
-        for error in errors:
-            print(f"- {error}")
+    # Set the title of the page
+    st.title("Sinhala Grammar Checker")
 
-        print("\nSuggestions:")
-        for suggestion in suggestions:
-            print(f"- {suggestion}")
+    # Input text from user
+    user_input = st.text_area("Enter Sinhala Text:", "", height=200)
 
-    else:
-        print("\nNo custom rule errors detected!")
+    # Button to trigger grammar check
+    if st.button("Check Grammar"):
+        if user_input.strip():
+            # Get grammar feedback from Gemini API
+            gemini_response = check_grammar_with_gemini(user_input)
+            st.subheader("Gemini API Response:")
+            st.write(gemini_response)  # Display the response from Gemini
+
+            # Validate custom grammar rules
+            errors, corrected_text = validate_custom_rules(user_input)
+
+            if errors:
+                st.subheader("Custom Rule Errors:")
+                for error in errors:
+                    st.write(f"- {error}")
+
+                st.subheader("Corrected Sentence:")
+                st.write(f"{corrected_text}")  # Display the corrected sentence
+            else:
+                st.write("\nNo custom rule errors detected!")
+        else:
+            st.error("Please enter Sinhala text to check.")
 
 if __name__ == "__main__":
     main()

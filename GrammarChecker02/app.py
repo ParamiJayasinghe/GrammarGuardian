@@ -110,7 +110,7 @@ def main():
                 st.write("ඔබ ඇතුලත්කල වාක්‍යයේ ව්‍යාකරණ දෝශයක් පවතී. එය පහත සඳහන් ලෙස නිවැරදි විය යුතුය.")
                 st.write(corrected_text)  # Display the corrected sentence
         else:
-            st.error("කරුණාකර පුරාකළ වාක්‍යක් ඇතුලත් කරන්න.")
+            st.error("කරුණාකර වෙනත් වාක්‍යක් ඇතුලත් කරන්න.")
 
 if __name__ == "__main__":
     main()

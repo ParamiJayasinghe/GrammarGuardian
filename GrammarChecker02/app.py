@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 # Step 1: Configure your API Key
-genai.configure(api_key="YOUR_API_KEY")  # Replace with your actual API key
+genai.configure(api_key="AIzaSyCPHqFRMpblUyiENpsQAq4KnOgQcdzQbIU")  # Replace with your actual API key
 
 # Function to call Gemini and check grammar
 def check_grammar_with_gemini(text):
@@ -18,25 +18,62 @@ def check_grammar_with_gemini(text):
     except Exception as e:
         return f"Error: {e}"
 
-# Function to validate the custom rules
 def validate_custom_rules(text):
     errors = []
     suggestions = []
-    corrected_text = text  # Keep track of the corrected text
+    corrected_text = text  # Initialize with the original text
 
-    # Rule 1: Starts with "මම" must end with "මි"
+    # Define correction patterns for "මම" and "අපි"
+    correction_patterns_mama = {
+        "ටා": "ටෙමි", "නා": "නෙමි", "තා": "තෙමි", "දා": "දෙමි", "බා": "බෙමි",
+        "මා": "මෙමි", "යා": "යෙමි", "වා": "වෙමි", "සා": "සෙමි",
+        "ටාය": "ටෙමි", "නාය": "නෙමි", "තාය": "තෙමි", "දාය": "දෙමි", "බාය": "බෙමි",
+        "මාය": "මෙමි", "යාය": "යෙමි", "වාය": "වෙමි", "සාය": "සෙමි",
+        "ටේය": "ටෙමි", "ටී": "ටිමි", "ටෙහි": "ටෙමි"
+    }
+
+    correction_patterns_api = {
+        "ටා": "ටෙමු", "නා": "නෙමු", "තා": "තෙමු", "දා": "දෙමු", "බා": "බෙමු",
+        "මා": "මෙමු", "යා": "යෙමු", "වා": "වෙමු", "සා": "සෙමු",
+        "ටාය": "ටෙමු", "නාය": "නෙමු", "තාය": "තෙමු", "දාය": "දෙමු", "බාය": "බෙමු",
+        "මාය": "මෙමු", "යාය": "යෙමු", "වාය": "වෙමු", "සාය": "සෙමු",
+        "ටේය": "ටෙමු", "ටී": "ටිමු", "ටෙහි": "ටෙමු"
+    }
+
+    # Check for sentences starting with "මම"
     if text.startswith("මම"):
-        if not (text.endswith("මි") or text.endswith("මී") or text.endswith("යයි") or text.endswith("වී")):
-            errors.append("The sentence starts with 'මම' but does not end with 'මි', 'මී', 'යයි', or 'වී'.")
-            corrected_text = text.rstrip(".") + "මි."
+        # Loop through the correction patterns for "මම"
+        for pattern, replacement in correction_patterns_mama.items():
+            if text.endswith(pattern):
+                errors.append(f"The sentence starts with 'මම' but ends with '{pattern}', which is incorrect.")
+                corrected_text = text[: -len(pattern)] + replacement
+                suggestions.append(corrected_text)
+                break  # Only apply the first matching correction
 
-    # Rule 2: Starts with "අපි" must end with "මු"
+        # If no pattern matched, check the default ending with "මි"
+        if not any(text.endswith(pat) for pat in correction_patterns_mama.keys()):
+            if not text.endswith("මි"):
+                errors.append("The sentence starts with 'මම' but does not end with 'මි'.")
+                corrected_text = text.rstrip(".") + "මි."
+                suggestions.append(corrected_text)
+
+    # Check for sentences starting with "අපි"
     if text.startswith("අපි"):
-        if not (text.endswith("මු") or text.endswith("ෙමු") or text.endswith("යමු") or text.endswith("වෙමු")):
-            errors.append("The sentence starts with 'අපි' but does not end with 'මු', 'ෙමු', 'යමු', or 'වෙමු'.")
-            corrected_text = text.rstrip(".") + "මු."
+        # Loop through the correction patterns for "අපි"
+        for pattern, replacement in correction_patterns_api.items():
+            if text.endswith(pattern):
+                errors.append(f"The sentence starts with 'අපි' but ends with '{pattern}', which is incorrect.")
+                corrected_text = text[: -len(pattern)] + replacement
+                suggestions.append(corrected_text)
+                break  # Only apply the first matching correction
 
-    # Return the errors and corrected text
+        # If no pattern matched, check the default ending with "මු"
+        if not any(text.endswith(pat) for pat in correction_patterns_api.keys()):
+            if not text.endswith("මු"):
+                errors.append("The sentence starts with 'අපි' but does not end with 'මු'.")
+                corrected_text = text.rstrip(".") + "මු."
+                suggestions.append(corrected_text)
+
     return errors, corrected_text
 
 # Streamlit UI

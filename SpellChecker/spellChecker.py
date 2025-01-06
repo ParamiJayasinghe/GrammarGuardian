@@ -11,7 +11,7 @@ class SinhalaSpellChecker:
             'ූ': 'ු',    # කලූ -> කලු
             'ී': 'ි',    # නගී -> නගි
             'ෙ': 'ේ',
-            'ொ': 'ො',
+            
             
             # Consonant variations
             'ද': 'ඩ',    # උද -> උඩ
